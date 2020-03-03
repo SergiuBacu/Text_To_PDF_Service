@@ -3,6 +3,6 @@
 import logging
 import sys
 logging.basicConfig(stream=sys.stderr)
-sys.path.insert(0, '/home/kafka/Documents/FlaskProject')
+sys.path.insert(0, '/var/www/Text_to_PDF_Service')
 from FlaskFirst import app as application
 application.secret_key = 'anything you wish'
