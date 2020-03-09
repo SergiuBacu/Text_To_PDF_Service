@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import os
 
 # init SQLAlchemy so we can use it later in our models
 database = SQLAlchemy()
@@ -10,6 +11,11 @@ def create_app():
 
     application.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
     application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    application.config['UPLOAD_DIR'] = os.path.join(os.getcwd(),os.environ['FLASK_APP'],'uploads')
+    # if local path for uploads doesn't exist, create it
+    if not os.path.exists(application.config['UPLOAD_DIR']):
+        os.mkdir(application.config['UPLOAD_DIR'])
+
 
     database.init_app(application)
 
