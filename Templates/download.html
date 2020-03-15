@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column is-6 is-offset-3">
+    <h3 class="title">Download</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+        {% endwith %}
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ header[0] }}</th>
+                        <th>{{ header[1] }}</th>
+                        <th>{{ header[2] }}</th>
+                        <th>{{ header[3] }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in rows %}
+                    <tr>
+                        <td>{{ row.filename }}</td>
+                        <td>{{ row.status }}</td>
+                        <td>{{ row.cloud_url }}</td>
+                        <td> <a href="{{ down_paths[loop.index] }}">Download</a> </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

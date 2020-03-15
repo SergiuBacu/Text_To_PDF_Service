@@ -4,4 +4,13 @@
 <h1 class="title">
   Welcome, {{ name }}
 </h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-danger">
+        {{ messages[0] }}
+    </div>
+{% endif %}
+{% endwith %}
+<a href="{{ url_for('main.upload') }}">Upload File...</a><br>
+<a href="{{ url_for('main.download') }}">Download File...</a><br>
 {% endblock %}
