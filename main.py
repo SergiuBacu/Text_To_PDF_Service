@@ -1,9 +1,25 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, current_app, send_from_directory, \
+    Response, make_response
 from flask_login import login_required, current_user
 from .upload import Upload
 from .models import File
 
 main = Blueprint('main', __name__)
+
+def allowed_file(filename):
+    """
+    check is filename is allowed. Based on https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/
+    :param filename: filname to check if it's valid
+    :return: Boolean, (id the file is valid or not)
+    """
+    is_allowed = False
+    # if the period is in the filename and the extension is allowed, then return True
+    if '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']:
+        is_allowed = True
+
+    return is_allowed
+
+
 
 @main.route('/')
 def index():
@@ -13,8 +29,6 @@ def index():
 @login_required
 def profile():
     return render_template('profile.html',name=current_user.name)
-
-
 
 @main.route('/service/upload')
 def upload():
@@ -35,9 +49,44 @@ def upload_post():
         flash('File name too long, please try again.')
         return redirect(url_for('main.upload'))  # reload page
 
-    # TODO: restrict upload to only text files, see flask upload doc for how to restrict by extension
+    if not allowed_file(file.filename):
+        flash('Only .txt files are allowed for upload, please try again')
+        return redirect(url_for('main.upload')) # reload the page
 
     do_upload = Upload(file, current_user.id)
     do_upload.upload_file_local()
     flash('Uploaded file successfully')
-    return redirect(url_for('main.profile'))
+
+    # return response with the redirect
+    response = make_response(Response(profile(), 201))
+    file_uploaded = File.query.filter_by(user_id = current_user.id, filename = file.filename.replace(' ','_')).first()
+    response.headers['Location'] = url_for('main.down_pdf', id = file_uploaded.id)
+
+    return response
+
+@main.route('/service/download')
+@login_required
+def download():
+    # get file data for current user
+    rows = File.query.filter_by(user_id = current_user.id).all()
+    # paths for downloading the file
+    down_paths = [url_for('main.down_pdf', id = row.id) for row in rows]
+    # add null at the beginning to account for table position
+    down_paths.insert(0,'na')
+    # header for the table
+    header = ['Filename', 'File Status', 'Cloud URL', 'Download Link']
+
+    return render_template('download.html', header = header, rows = rows, down_paths = down_paths)
+
+@main.route('/service/pdf/<id>')
+@login_required
+def down_pdf(id):
+    # get filename for the current user_id and file id
+    file = File.query.filter_by(user_id=current_user.id, id = id).first()
+    # handle case of filename change depending on the file upload/conversion status
+    if file.status == 'local_converted':
+        filename = file.filename.replace("txt", "pdf")
+    else:
+        filename = file.filename
+
+    return send_from_directory(current_app.config['UPLOAD_DIR'], filename, as_attachment = True)

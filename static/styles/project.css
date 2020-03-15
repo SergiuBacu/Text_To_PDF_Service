@@ -1617,7 +1617,7 @@ print {
 }
 
 .box {
-	background-color: #fff;
+	background-color: #000080;
 	border-radius: 6px;
 	box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
 	color: #4a4a4a;
@@ -5044,7 +5044,7 @@ print {
 
 .table {
 	background-color: #fff;
-	color: #FFFFFF
+	color: #000000
 }
 
 .table td,
@@ -5168,7 +5168,7 @@ print {
 .table thead td,
 .table thead th {
 	border-width: 0 0 2px;
-	color: #FFFFFF
+	color: #000000
 }
 
 .table tfoot td,

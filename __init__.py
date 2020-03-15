@@ -16,6 +16,8 @@ def create_app():
     if not os.path.exists(application.config['UPLOAD_DIR']):
         os.mkdir(application.config['UPLOAD_DIR'])
 
+    application.config['ALLOWED_EXTENSIONS'] = ('txt')
+
 
     database.init_app(application)
 
