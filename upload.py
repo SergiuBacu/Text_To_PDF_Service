@@ -3,7 +3,8 @@ from .models import File
 import os
 from werkzeug.utils import secure_filename
 from flask import current_app
-from fpdf import FPDF
+import json
+from .messages import connect_kafka_producer, publish_message
 
 class Upload():
     def __init__(self, file, user_id):
@@ -31,7 +32,19 @@ class Upload():
         database.session.add(new_file)
         database.session.commit()
 
-        self.convert_to_pdf()
+        # publish message to get this text file converted to pdf
+        data = json.dumps({"user_id":self.user_id, "upload_dir":self.upload_dir, "filename":self.filename})
+        kafka_producer = connect_kafka_producer()
+        if kafka_producer is not None:
+            publish_message(kafka_producer,'convert', "convert", data)
+            kafka_producer.close()
+
+        # queue file to have uploaded to the cloud
+        self.queue_file_cloud()
+
+
+
+
 
     def set_local_path(self, new_path):
         """
@@ -55,43 +68,6 @@ class Upload():
         # TODO: add functionality to queue file for cloud upload
         pass
 
-    def convert_to_pdf(self):
-        """
-        convert text file to PDF
-        :return: None
-        """
-        pdf = FPDF('P', 'in', 'Letter')
 
-        # set the font size
-        font_height = 0.16
-
-        # add a page , set margin and enable autyo page break
-        pdf.add_page()
-        pdf.set_margins(0.25,0.25)
-        pdf.set_auto_page_break(True, margin = 0.25)
-
-        # set the font and where the cursor starts
-        pdf.set_font('Arial','', 10)
-        pdf.set_xy(0.25, 0.25)
-
-        # open the text filen abd line by line, read from file and write to pdf
-        with open(os.path.join(self.upload_dir, self.filename), "r") as txt_file:
-            line = 1
-            while line:
-                line = txt_file.readline()
-                pdf.write(font_height, line)
-
-        # write out pdf file, use 'latin-1' encoding to avoid unicode issues
-        pdf.output(os.path.join(self.upload_dir, self.filename.replace('txt','pdf'))).encode('latin-1')
-
-        # delete the original file
-        if os.path.exists(os.path.join(self.upload_dir, self.filename.replace('txt','pdf'))):
-            os.remove(os.path.join(self.upload_dir, self.filename))
-
-        # upload DB with new status
-        self.status = "local_converted"
-        database.session.query(File).filter(File.user_id == self.user_id).\
-            filter(File.filename == self.filename).update({"status": self.status})
-        database.session.commit()
 
 
