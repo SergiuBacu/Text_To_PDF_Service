@@ -1,5 +1,4 @@
 from flask_login import UserMixin
-from pip._vendor.distlib import database
 
 from . import database
 
