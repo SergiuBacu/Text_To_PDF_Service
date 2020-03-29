@@ -3,6 +3,9 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_required, current_user
 from .upload import Upload
 from .models import File
+import google.cloud.storage as gcs
+import glob
+import os
 
 main = Blueprint('main', __name__)
 
@@ -19,7 +22,14 @@ def allowed_file(filename):
 
     return is_allowed
 
-
+def cleanup_tmp():
+    """
+    clean up temporary files in upload directory (from cloud downloads). Each temp file is a pdf prefixed with the bucket name
+    :return: None
+    """
+    path_pattern = os.path.join(current_app.config['UPLOAD_DIR'], current_app.config['BUCKET_NAME'] + '*.pdf')
+    for p in glob.glob(path_pattern):
+        os.unlink(p)
 
 @main.route('/')
 def index():
@@ -86,6 +96,19 @@ def down_pdf(id):
     # handle case of filename change depending on the file upload/conversion status
     if file.status == 'local_converted':
         filename = file.filename.replace("txt", "pdf")
+    elif file.status == "cloud_google":
+        try:
+            # cleanup any temp files from previous session of cloud downloads
+            cleanup_tmp()
+            # create local temp file to return to user, prepended with bucket name
+            filename = current_app.config['BUCKET_NAME'] + '_' + file.filename.replace("txt", "pdf")
+            bucket = gcs.Client().get_bucket(current_app.config['BUCKET_NAME'])
+            blob = bucket.blob(file.cloud_url)
+            with open(os.path.join(current_app.config['UPLOAD_DIR'], filename), 'wb') as tmp:
+                blob.download_to_file(tmp)
+        except Exception as ex:
+            flash("error in downloading file from cloud: {}".format(str(ex)))
+            return redirect(url_for('main.download'))
     else:
         filename = file.filename
 
