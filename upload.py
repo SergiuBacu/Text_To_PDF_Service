@@ -39,13 +39,6 @@ class Upload():
             publish_message(kafka_producer,'convert', "convert", data)
             kafka_producer.close()
 
-        # queue file to have uploaded to the cloud
-        self.queue_file_cloud()
-
-
-
-
-
     def set_local_path(self, new_path):
         """
         set directory for local file storage (default is uploads directory under flask app)
@@ -59,14 +52,6 @@ class Upload():
         self.upload_dir = new_path
         ret = True
         return ret
-
-    def queue_file_cloud(self):
-        """
-        queue file to kafka to have it uploaded to the cloud
-        :return: None
-        """
-        # TODO: add functionality to queue file for cloud upload
-        pass
 
 
 

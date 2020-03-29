@@ -15,6 +15,9 @@ def create_app():
     # if local path for uploads doesn't exist, create it
     if not os.path.exists(application.config['UPLOAD_DIR']):
         os.mkdir(application.config['UPLOAD_DIR'])
+    # set bucket name for Google Cloud Storage where file will be uploaded and downloaded
+    application.config['BUCKET_NAME'] = 'sergiu_project2'
+
 
     application.config['ALLOWED_EXTENSIONS'] = ('txt')
 
