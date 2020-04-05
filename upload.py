@@ -6,6 +6,7 @@ from flask import current_app
 import json
 from .messages import connect_kafka_producer, publish_message
 
+
 class Upload():
     def __init__(self, file, user_id):
         self.file = file
