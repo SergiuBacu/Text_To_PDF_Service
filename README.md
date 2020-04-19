@@ -23,7 +23,7 @@ Cloud computing technology is  the availability of data over the internet.
 This technology made possibile the storage, sending, and receiving of data between 2 computers connected to the network.
 Because of this technology, the users no longer had to rely on data transmission devices like local hard drives, and thus a rapid progress of development was made possible.
 A diagram of how the cloud technology works can be seen below.
-![Cloud Computing Diagram](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Cloud.jpg)
+![Cloud Computing Diagram](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Cloud.jpg)
 
 Cloud can only be the accessibility of data over the internet. A separated wide area network like the connection between the computers of one neighbourhood, but separated from internet, cannot be called cloud.
 
@@ -38,7 +38,7 @@ The project  also uses Apache Kafka for asynchronous processing of the pdf files
 ### 2. Technologies and Tools
 
 The project's overview can be seen in the diagram below. 
-![Project Diagram](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Project%20Diagram.jpg)
+![Project Diagram](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Project_Diagram.jpg)
 
  * ### _Apache Kafka_	
 
@@ -56,13 +56,13 @@ The traditional systems offer 2 ways of consuming:
 2. Publish-Subscribe
 
 In the “queue” model, each message reaches a single consumer. In the “Publish-Subscribe” model, each message reaches each consumer. Kafka implements a single abstraction that covers both models, called the “consumers group”. In Kafka, every consumer is part of a group, even if the consumer is alone in the group. Within a group, only one consumer can receive messages. But messages are delivered to all groups of consumers. This approach allows the system to offer a single way to group the messages : using topics. Kafka is a “publish-subscribe” model, in which subscription is done by groups of consumers, and not by consumers alone. If all the consumers are part of the same group, every message  will reach only one consumer from a group, the topic acting like a queue. But if each consumer is part of a different group, then all the consumers will receive the published messages – the classic public-subscribe model. In reality though, we will have to deal with a small number of groups of consumers, each group corresponding to a service that is interested in the data published by Kafka. Within the groups, we will have many consumers (usually one for each computer that runs the service). Because each group receives each message published in a topic, the services will receive all the published messages, but within a service the message processing will be distributed between computers.
-![Kafka](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Kafka%20Messaging%20Pic.jpg)
+![Kafka](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Kafka_Messaging_Pic.jpg)
 
 * #### Kafka Architecture
 
 Broadly, a Kafka service is formed from many computers that have the role of a broker, recording the published messages. Besides that, there is the need of a group of computers to run Zookeeper. Kafka uses Zookeeper to coordinate and manage the brokers.
 The quantity of messages published on one topic can exceed the capacity of a broker, therefore the topics are divided in “partitions”.  Each partition is in fact a “message journal”. The partitions need to fit entirely on a broker, and, the partitions that belong to one topic, are uniformly distributed between brokers, each broker having almost the same number of partitions.
-![KafkaProducerConsumer](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Kafka_Producer_Consumer.jpg)
+![KafkaProducerConsumer](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Kafka_Producer_Consumer.jpg)
 
 When a producer wants to publish a message in Kafka, he interogates a broker to find out how many partitions are there, and how are the partitions distributed among the brokers, he decides (the producer) what partition to use (based on the content of the message, random or looping through the patitions), then the producer sends the message to the broker that hosts the chosen partition.
 On the consumers side, the partitions of a topic are equaly distributed between the consumers of a group, every consumer receiving one or more partitions which he can read messages from. Besides the uniform distribution of tasks to consume messages, the partition distribution garantees that each message will be proccesed by a single consumer from a group.
@@ -151,22 +151,22 @@ The project also uses a CSS file for the page layout.
 * ##### Home
 
 This is the page that is loaded first when the user accesses the server
-![Home Page](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Home.jpg)
+![Home Page](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Home.jpg)
 
 * ##### Sign Up
 
 In order to create an account, the user must provide an email address, a name, and a password. The email, the name, and the password provided are then stored into the database for future login attempts.
 When a user provides an email address, the flask application will compare the address with the records from the database, and if the email is in the database, it means the address was used for another account and the flask application will return an error.
 
-![Sign Up](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/SignUp.jpg)
+![Sign Up](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/SignUp.jpg)
 
 When the error message is displayed the page will look the one below.
 
-![Sign Up Error](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/SignUp_Error.jpg)
+![Sign Up Error](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/SignUp_Error.jpg)
 
 The Login page should appear as the image below.
 
-![Login Page](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Login.jpg)
+![Login Page](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Login.jpg)
 
 When the user provides valid credentials, the flask application will grant access and the user will be redirected to the Profile page. The profile page will contain a “Welcome” message followed by the name from the database which the user has provided at sign up.
 
@@ -174,7 +174,7 @@ The “Login” button will then be replaced with a “Log Out” button and thu
 
 The Profile page should look like the page shown below.
 
-![Profile](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Profile.jpg)
+![Profile](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Profile.jpg)
 
 ### 4. Uploading Documents
 
@@ -186,12 +186,16 @@ After the file is uploaded, the application will convert the file to pdf.
 
 The uploading page looks like the image below.
 
-![Uploading Page](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Upload.jpg)
+![Uploading Page](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Upload.jpg)
+
+If the uploaded was successfully the page should look like the one below.
+
+![Uploading_Successfully](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/UploadedSuccessfuly.jpg)
 
 ### 5. Downloading Documents
 
 After the user has successfully uploaded the document, the application will convert the file into PDF format and allow the user to download the converted file. Also the user will be able to download files from previous uploads.
 
-![Downloading Page](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/DownloadFile.jpg)
+![Downloading Page](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/DownloadFile.jpg)
 
 
