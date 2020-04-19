@@ -23,7 +23,7 @@ Cloud computing technology is  the availability of data over the internet.
 This technology made possibile the storage, sending, and receiving of data between 2 computers connected to the network.
 Because of this technology, the users no longer had to rely on data transmission devices like local hard drives, and thus a rapid progress of development was made possible.
 A diagram of how the cloud technology works can be seen below.
-![Image description](link-to-image)
+![Cloud Computing Diagram](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Cloud.jpg)
 
 Cloud can only be the accessibility of data over the internet. A separated wide area network like the connection between the computers of one neighbourhood, but separated from internet, cannot be called cloud.
 
