@@ -38,7 +38,7 @@ The project  also uses Apache Kafka for asynchronous processing of the pdf files
 ### 2. Technologies and Tools
 
 The project's overview can be seen in the diagram below. 
-![Image description](link-to-image)
+![Project Diagram](https://github.com/SergiuBacu/Resources/blob/master/TEXT_TO_PDF_PROJECT/Project%20Diagram.jpg)
 
  * ### _Apache Kafka_	
 
