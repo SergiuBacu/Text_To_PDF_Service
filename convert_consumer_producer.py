@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 # the file to the 'cloud' topic in order to upload it to the cloud
 
 # RUN THIS IS THE PARENT DIRECTORY OF THE MAIN FLASK PROJECT DIRECTORY AS :
-# python -m FirstProject.convert_consumer_producer
+# python -m FlaskProject.convert_consumer_producer
 
 
 def convert_to_pdf(session, user_id, upload_dir, filename):
