@@ -103,6 +103,7 @@ Flask-Login properties:
 * #### SQLAlchemy
 
 SQLAlchemy has two major modes of usage, SQL Expression Language (referred to as Core), and ORM. The modes can be used separately or together, depending on the application. Its major components are illustrated below, with component dependencies organized into layers:
+
 ![SQLAlchemyDiagram](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/SQLAlchemyDiagram.png)
 
 In the figure above, the two most significant front-facing portions of SQLAlchemy are the Object Relational Mapper, and the SQL Expression Language. SQL Expressions can be used independently of the ORM. When using the ORM, the SQL Expression language remains part of the public facing API as it is used within object-relational configurations and queries.
