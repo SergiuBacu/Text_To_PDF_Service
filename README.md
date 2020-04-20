@@ -191,7 +191,7 @@ The uploading page looks like the image below.
 
 ![Uploading Page](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/Upload.jpg)
 
-If the uploaded was successfully the page should look like the one below.
+If the upload was successfully the page should look like the one below.
 
 ![Uploading_Successfully](https://github.com/SergiuBacu/Text_To_PDF_Service/blob/master/resources/UploadedSuccessfuly.jpg)
 
