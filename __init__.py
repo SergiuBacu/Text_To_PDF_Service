@@ -19,6 +19,7 @@ def create_app():
     }
     swagger = Swagger(application)
 
+    application.config['BASEDIR'] = application.root_path
     application.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
     application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     application.config['UPLOAD_DIR'] = os.path.join(os.getcwd(),os.environ['FLASK_APP'],'uploads')
